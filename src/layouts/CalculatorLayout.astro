@@ -1,0 +1,61 @@
+---
+const { city, state, zip, riskLevel, riskDesc, multiplier } = Astro.props;
+
+// Nasz wzór cenowy
+const BASE_REPAIR_C0ST = 10000;
+const LOW_ESTIMATE = Math.round((BASE_REPAIR_C0ST * multiplier) * 0.85);
+const HIGH_ESTIMATE = Math.round((BASE_REPAIR_C0ST * multiplier) * 1.25);
+---
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Foundation Repair Cost in {city}, {state} | 2026 Calculator</title>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+    
+    <!-- GŁÓWNY WIDOK KALKULATORA BAZOWEGO -->
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        <h1 class="text-4xl font-extrabold text-slate-900 text-center mb-2">Foundation Repair Cost Estimator</h1>
+        <p class="text-center text-slate-500 mb-8">Localized structural data for <strong>{city}, {state} ({zip})</strong></p>
+
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+            <h2 class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-2">Geological Risk Analysis</h2>
+            
+            {riskLevel === "HIGH_EXPANSIVE_CLAY" ? (
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r">
+                    <p class="text-red-700 font-bold">🔴 High Geological Risk Detected</p>
+                    <p class="text-red-600 text-sm mt-1">{riskDesc}</p>
+                </div>
+            ) : riskLevel === "MODERATE_WATER_DAMAGE" ? (
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r">
+                    <p class="text-amber-700 font-bold">🟡 Moderate Flooding/Soil Risk Detected</p>
+                    <p class="text-amber-600 text-sm mt-1">{riskDesc}</p>
+                </div>
+            ) : (
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r">
+                    <p class="text-green-700 font-bold">🟢 Standard/Low Soil Shifting Risk</p>
+                    <p class="text-green-600 text-sm mt-1">{riskDesc}</p>
+                </div>
+            )}
+
+            <div class="text-center py-6">
+                <p class="text-sm text-slate-500 mb-1">Estimated Repair Range for {city}</p>
+                <div class="text-5xl font-black text-slate-800">
+                    ${LOW_ESTIMATE.toLocaleString()} <span class="text-slate-300 text-3xl font-medium">to</span> ${HIGH_ESTIMATE.toLocaleString()}
+                </div>
+            </div>
+
+            <div class="mt-8 border-t border-slate-100 pt-6">
+                <p class="text-center text-sm font-semibold mb-4">This is a dynamic estimate based on regional soil types. Get an exact, certified engineering quote to compare.</p>
+                <!-- START THE TRAP -->
+                <a href="#link-do-afiliacji-w-przyszlosci" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-4 px-6 rounded-lg transition-colors text-lg shadow-md hover:shadow-lg">
+                    Check Exact Price from Local Experts (Free)
+                </a>
+            </div>
+        </div>
+        <p class="text-center text-xs text-slate-400 mt-6 mt-4">Calculations based on USDA National Cooperative Soil Survey data for ZIP Code {zip}.</p>
+    </main>
+
+</body>
+</html>
