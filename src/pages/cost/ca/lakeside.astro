@@ -1,9 +1,18 @@
 ---
-layout: '../../../layouts/CalculatorLayout.astro'
-city: "Lakeside"
-state: "CA"
-zip: "92040"
-riskLevel: "LOW_SHIFTING"
-riskDesc: "Standard risk. Generally stable soil or well-drained area."
-multiplier: 1.0
+import CalculatorLayout from '../../../layouts/CalculatorLayout.astro';
+
+const city = "Lakeside";
+const state = "CA";
+const zip = "92040";
+const riskLevel = "LOW_SHIFTING";
+const riskDesc = "Standard risk. Generally stable soil or well-drained area.";
+const multiplier = 1.0;
 ---
+<CalculatorLayout 
+    city={city} 
+    state={state} 
+    zip={zip} 
+    riskLevel={riskLevel} 
+    riskDesc={riskDesc} 
+    multiplier={multiplier} 
+/>

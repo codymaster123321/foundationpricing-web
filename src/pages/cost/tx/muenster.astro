@@ -1,9 +1,18 @@
 ---
-layout: '../../../layouts/CalculatorLayout.astro'
-city: "Muenster"
-state: "TX"
-zip: "76252"
-riskLevel: "HIGH_EXPANSIVE_CLAY"
-riskDesc: "High Risk. Significant presence of expansive clays or poor drainage detected."
-multiplier: 1.18
+import CalculatorLayout from '../../../layouts/CalculatorLayout.astro';
+
+const city = "Muenster";
+const state = "TX";
+const zip = "76252";
+const riskLevel = "HIGH_EXPANSIVE_CLAY";
+const riskDesc = "High Risk. Significant presence of expansive clays or poor drainage detected.";
+const multiplier = 1.18;
 ---
+<CalculatorLayout 
+    city={city} 
+    state={state} 
+    zip={zip} 
+    riskLevel={riskLevel} 
+    riskDesc={riskDesc} 
+    multiplier={multiplier} 
+/>

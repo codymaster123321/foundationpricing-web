@@ -1,9 +1,18 @@
 ---
-layout: '../../../layouts/CalculatorLayout.astro'
-city: "Elbert"
-state: "CO"
-zip: "80106"
-riskLevel: "MODERATE_WATER_DAMAGE"
-riskDesc: "Moderate Risk. Elevated flood risk detected in your area."
-multiplier: 1.08
+import CalculatorLayout from '../../../layouts/CalculatorLayout.astro';
+
+const city = "Elbert";
+const state = "CO";
+const zip = "80106";
+const riskLevel = "MODERATE_WATER_DAMAGE";
+const riskDesc = "Moderate Risk. Elevated flood risk detected in your area.";
+const multiplier = 1.08;
 ---
+<CalculatorLayout 
+    city={city} 
+    state={state} 
+    zip={zip} 
+    riskLevel={riskLevel} 
+    riskDesc={riskDesc} 
+    multiplier={multiplier} 
+/>

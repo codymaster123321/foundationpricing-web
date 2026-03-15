@@ -1,9 +1,18 @@
 ---
-layout: '../../../layouts/CalculatorLayout.astro'
-city: "Baldwin Park"
-state: "CA"
-zip: "91706"
-riskLevel: "MODERATE_WATER_DAMAGE"
-riskDesc: "Moderate Risk. Elevated flood risk detected in your area."
-multiplier: 1.08
+import CalculatorLayout from '../../../layouts/CalculatorLayout.astro';
+
+const city = "Baldwin Park";
+const state = "CA";
+const zip = "91706";
+const riskLevel = "MODERATE_WATER_DAMAGE";
+const riskDesc = "Moderate Risk. Elevated flood risk detected in your area.";
+const multiplier = 1.08;
 ---
+<CalculatorLayout 
+    city={city} 
+    state={state} 
+    zip={zip} 
+    riskLevel={riskLevel} 
+    riskDesc={riskDesc} 
+    multiplier={multiplier} 
+/>

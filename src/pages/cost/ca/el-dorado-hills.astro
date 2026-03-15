@@ -1,9 +1,18 @@
 ---
-layout: '../../../layouts/CalculatorLayout.astro'
-city: "El Dorado Hills"
-state: "CA"
-zip: "95762"
-riskLevel: "MODERATE_WATER_DAMAGE"
-riskDesc: "Moderate Risk. Elevated flood risk detected in your area."
-multiplier: 1.08
+import CalculatorLayout from '../../../layouts/CalculatorLayout.astro';
+
+const city = "El Dorado Hills";
+const state = "CA";
+const zip = "95762";
+const riskLevel = "MODERATE_WATER_DAMAGE";
+const riskDesc = "Moderate Risk. Elevated flood risk detected in your area.";
+const multiplier = 1.08;
 ---
+<CalculatorLayout 
+    city={city} 
+    state={state} 
+    zip={zip} 
+    riskLevel={riskLevel} 
+    riskDesc={riskDesc} 
+    multiplier={multiplier} 
+/>
