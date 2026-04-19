@@ -6,7 +6,7 @@ import path from 'node:path';
 
 let totalRegionsCount = 4500; // Fallback bazowy
 try {
-  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  const reportsDir = path.resolve(process.cwd(), 'driller/raw_reports');
   if (fs.existsSync(reportsDir)) {
     totalRegionsCount = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md')).length;
   }

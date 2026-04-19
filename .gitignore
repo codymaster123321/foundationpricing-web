@@ -22,3 +22,8 @@ npm-debug.log*
 .idea/
 *.swp
 *.swo
+
+# Python
+driller/venv/
+driller/__pycache__/
+*.pyc

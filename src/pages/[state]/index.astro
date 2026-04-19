@@ -9,7 +9,7 @@ import path from 'node:path';
 
 export async function getStaticPaths() {
   // O(1) NATIVE FS RESOLVER
-  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  const reportsDir = path.resolve(process.cwd(), 'driller/raw_reports');
   const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md'));
   
   const stateMap = {};

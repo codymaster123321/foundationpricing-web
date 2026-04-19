@@ -10,7 +10,7 @@ import { marked } from 'marked';
 
 export async function getStaticPaths() {
   // O(1) NATIVE FS RESOLVER - bez Vite watcher (wcześniej powodował memory leak na 7500 plikach)
-  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  const reportsDir = path.resolve(process.cwd(), 'driller/raw_reports');
   const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md'));
 
   const allReports = [];  // Każdy plik = osobna strona (bez deduplikacji Set!)
@@ -87,7 +87,7 @@ export async function getStaticPaths() {
 const { fileName, uniqueStateCities, cityZipMap } = Astro.props;
 
 // Odczytujemy Markdown prosto z dysku API Node'a
-const rawFilePath = path.resolve(process.cwd(), `../driller/raw_reports/${fileName}`);
+const rawFilePath = path.resolve(process.cwd(), `driller/raw_reports/${fileName}`);
 const fileContent = fs.readFileSync(rawFilePath, 'utf-8');
 
 const yamlMatch = fileContent.match(/---\r?\n([\s\S]*?)\r?\n---/);
