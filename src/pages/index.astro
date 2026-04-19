@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ZipSearch from '../components/ZipSearch.jsx';
-import UsaRiskMap from '../components/UsaRiskMap.jsx';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -149,30 +148,6 @@ const STATES = [
             </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- INTERACTIVE USA RISK MAP -->
-  <section class="py-24 sm:py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPjwvc3ZnPg==')] opacity-10 pointer-events-none"></div>
-    <div class="absolute top-0 right-0 p-32 bg-blue-500/10 w-[800px] h-[800px] rounded-full pointer-events-none blur-[120px] mix-blend-screen"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm border border-blue-500/20 backdrop-blur-sm">
-            <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-            Interactive Telemetry
-        </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">Explore Geotechnical Risk by State</h2>
-        <p class="text-slate-400 sm:text-lg leading-relaxed max-w-2xl mx-auto font-medium">
-          Monitor live data feeds from our analytics network. Hover over active territories to view structural hazard reports, USDA indices, and algorithmic estimates.
-        </p>
-      </div>
-
-      <div class="w-full relative bg-slate-800/50 backdrop-blur-md rounded-3xl p-4 sm:p-8 shadow-2xl border border-slate-700/50 ring-1 ring-white/5">
-        <UsaRiskMap client:visible />
-      </div>
-
     </div>
   </section>
 
