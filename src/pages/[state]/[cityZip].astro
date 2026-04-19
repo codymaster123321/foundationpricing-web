@@ -1,0 +1,339 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FoundationCalculator from '../../components/FoundationCalculator.jsx';
+import LeadGenForm from '../../components/LeadGenForm.astro';
+import ServiceAreas from '../../components/ServiceAreas.astro';
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { marked } from 'marked';
+
+export async function getStaticPaths() {
+  // O(1) NATIVE FS RESOLVER - bez Vite watcher (wcześniej powodował memory leak na 7500 plikach)
+  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md'));
+
+  const allReports = [];  // Każdy plik = osobna strona (bez deduplikacji Set!)
+  const citiesByState = {};  // Do SEO Ring: alphabetical lista miast
+  const primaryZipByCity = {};  // cityName → primaryZip (dla linków na stronie stanu)
+
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(reportsDir, file), 'utf-8');
+
+    const stateAbbrMatch = content.match(/state_abbr:\s*['"]?([A-Z]{2})['"]?/);
+    const cityMatch = content.match(/city:\s*['"]?([^'"\n]+)['"]?/);
+    const zipMatch = content.match(/zip_code:\s*['"]?(\d+)['"]?/);
+
+    if (stateAbbrMatch && cityMatch && zipMatch) {
+      const state = stateAbbrMatch[1].toLowerCase();
+      const city = cityMatch[1];
+      const zip = zipMatch[1];
+
+      allReports.push({
+        file: file,
+        state_abbr: stateAbbrMatch[1],
+        city: city,
+        zip: zip
+      });
+
+      // Buduj alphabetical lista miast (Set → Array, bez duplikatów nazw)
+      if (!citiesByState[state]) {
+        citiesByState[state] = new Set();
+      }
+      citiesByState[state].add(city);
+
+      // Primary ZIP = najniższy numer ZIP dla tego miasta (pierwszy w sortowaniu alfabetycznym plików)
+      // Ponieważ pliki są sortowane alfabetycznie i nazywają się report_ZIP_City.md,
+      // pierwszy plik dla danego miasta ma najniższy numer ZIP
+      const cityKey = `${city}|${state}`;
+      if (!primaryZipByCity[cityKey]) {
+        primaryZipByCity[cityKey] = zip;
+      }
+    }
+  }
+
+  return allReports.map((report) => {
+    const stateAbbr = report.state_abbr.toLowerCase();
+    const citySlug = report.city.toLowerCase().replace(/ /g, '-');
+    const zipSlug = report.zip;
+    // URL: /tx/katy-77494
+    const cityZipSlug = `${citySlug}-${zipSlug}`;
+
+    const stateCities = Array.from(citiesByState[stateAbbr]).sort();
+
+    // Buduj cityZipMap dla ServiceAreas: { "Houston": "77002", "Austin": "78701", ... }
+    const cityZipMap = {};
+    for (const cityName of stateCities) {
+      const cityKey = `${cityName}|${stateAbbr}`;
+      if (primaryZipByCity[cityKey]) {
+        cityZipMap[cityName] = primaryZipByCity[cityKey];
+      }
+    }
+
+    return {
+      params: {
+        state: stateAbbr,
+        cityZip: cityZipSlug   // ← zmiana: teraz parametr zawiera "miasto-zip"
+      },
+      props: {
+        fileName: report.file,
+        uniqueStateCities: stateCities,  // alphabetical lista nazw miast (dla SEO Ring)
+        cityZipMap: cityZipMap            // { "Katy": "77494", "Houston": "77002", ... }
+      },
+    };
+  });
+}
+
+const { fileName, uniqueStateCities, cityZipMap } = Astro.props;
+
+// Odczytujemy Markdown prosto z dysku API Node'a
+const rawFilePath = path.resolve(process.cwd(), `../driller/raw_reports/${fileName}`);
+const fileContent = fs.readFileSync(rawFilePath, 'utf-8');
+
+const yamlMatch = fileContent.match(/---\r?\n([\s\S]*?)\r?\n---/);
+const frontmatter = {};
+let markdownBody = fileContent;
+
+if (yamlMatch) {
+    markdownBody = fileContent.replace(yamlMatch[0], '');
+    const lines = yamlMatch[1].split('\n');
+    for (const line of lines) {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex > -1) {
+            const key = line.slice(0, colonIndex).trim();
+            const val = line.slice(colonIndex + 1).trim().replace(/^['"]|['"]$/g, '');
+            frontmatter[key] = val;
+        }
+    }
+}
+
+const htmlContent = marked.parse(markdownBody);
+
+// Zabezpieczamy wartości null
+const checkBadge = (val) => {
+    return val !== null && val !== 'null' && val !== undefined && val !== '';
+};
+
+const formatDollar = (val) => {
+    if (!val) return '';
+    return Number(val).toLocaleString('en-US');
+};
+
+// Generowanie JSON-LD Schema.org (E-E-A-T)
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `Foundation Repair & Soil Guide for ${frontmatter.city}, ${frontmatter.state_abbr} ${frontmatter.zip_code}`,
+  "author": {
+    "@type": "Organization",
+    "name": "Foundation Pricing Data"
+  },
+  "spatialCoverage": {
+    "@type": "Place",
+    "name": `${frontmatter.city}, ${frontmatter.state_abbr} ${frontmatter.zip_code}`,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": frontmatter.city,
+      "addressRegion": frontmatter.state_abbr,
+      "addressCountry": "US",
+      "postalCode": frontmatter.zip_code
+    }
+  }
+};
+---
+
+<Layout
+  title={`Foundation Repair Estimator & Soil Guide | ${frontmatter.city}, ${frontmatter.state_abbr} ${frontmatter.zip_code}`}
+  description={`Explore localized foundation repair costs, soil clay indices, and historical building data for ${frontmatter.city}, ${frontmatter.county}, ${frontmatter.state_full}.`}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <!-- BREADCRUMBS -->
+  <nav class="bg-white border-b border-slate-200/60 sticky top-0 z-40 bg-white/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs sm:text-sm text-slate-500 overflow-x-auto whitespace-nowrap">
+      <div class="flex items-center gap-2">
+        <a href="/" class="hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
+        </a>
+        <span class="text-slate-300">/</span>
+        <a href={`/${frontmatter.state_abbr.toLowerCase()}`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-blue-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {frontmatter.state_full}
+        </a>
+        <span class="text-slate-300">/</span>
+        <!-- Zmiana: breadcrumbs teraz pokazują city-ZIP zamiast samego miasta -->
+        <span class="font-bold text-slate-800">{frontmatter.city}-{frontmatter.zip_code}</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO TOP SECTION (Above The Fold) -->
+  <section class="bg-slate-50 border-b border-slate-200 pt-10 sm:pt-16 pb-12 sm:pb-20 relative overflow-hidden">
+    {/* Subtelny Grid Analityczny tła w sekcji kalkulatora */}
+    <div class="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] bg-[size:32px_32px] opacity-40"></div>
+    <div class="absolute top-0 right-0 p-32 bg-blue-100/50 blur-[120px] w-[800px] h-[800px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <!-- HERO TEXT FULL WIDTH -->
+      <div class="mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-blue-600 text-[10px] font-bold tracking-widest uppercase mb-6 shadow-sm border border-blue-100">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping"></span>
+            Local Geotechnical Report
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-[1.1]">
+          Foundation Repair Costs <br class="hidden lg:block"/> & Guide for <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">{frontmatter.city}, {frontmatter.state_abbr} {frontmatter.zip_code}</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-600 leading-relaxed font-medium">
+          Access hyper-localized geotechnical data, historical housing construction codes, and live foundation repair estimates restricted to the parameters of {frontmatter.county}.
+        </p>
+      </div>
+
+      <!-- TWO-COLUMN LAYOUT -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+
+        <!-- Main Component Left -->
+        <div class="lg:col-span-7 xl:col-span-8 relative z-10 w-full flex-1 order-last lg:order-first">
+            <FoundationCalculator
+              laborIndex={parseFloat(frontmatter.labour_index)}
+              city={frontmatter.city}
+              state={frontmatter.state_abbr}
+              zipCode={frontmatter.zip_code}
+              client:load
+            />
+        </div>
+
+        <!-- Badges Right Sidebar -->
+        <div class="lg:col-span-5 xl:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5 order-first lg:order-last w-full max-w-md mx-auto lg:max-w-none">
+          {checkBadge(frontmatter.usda_soil_index) && (
+            <div class="h-full flex flex-col justify-between bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+              <div class="absolute top-0 left-0 w-1 h-full bg-orange-500 rounded-l-2xl"></div>
+              <div class="pl-2">
+                <span class="block text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-between">
+                    USDA Clay Index
+                    <svg class="w-4 h-4 text-orange-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </span>
+                <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{frontmatter.usda_soil_index}<span class="text-lg text-slate-400 font-bold ml-1">/ 100</span></span>
+              </div>
+              <div class="mt-4 pl-2 text-[10px] text-slate-400 font-semibold tracking-wide border-t border-slate-100 pt-3">
+                Source: <a href="https://sdmdataaccess.nrcs.usda.gov/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-600 transition-colors">USDA Soil Data Access</a>
+              </div>
+            </div>
+          )}
+
+          {checkBadge(frontmatter.drought_status) && (
+            <div class="h-full flex flex-col justify-between bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+              <div class="absolute top-0 left-0 w-1 h-full bg-red-500 rounded-l-2xl"></div>
+              <div class="pl-2">
+                <span class="block text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-between">
+                    Drought Level
+                    <svg class="w-4 h-4 text-red-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </span>
+                <span class="text-2xl sm:text-3xl font-black text-slate-800 leading-tight block truncate tracking-tight">{frontmatter.drought_status.split('-')[0]} Risk</span>
+              </div>
+              <div class="mt-4 pl-2 text-[10px] text-slate-400 font-semibold tracking-wide border-t border-slate-100 pt-3">
+                Source: <a href="https://droughtmonitor.unl.edu/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-600 transition-colors">US Drought Monitor</a>
+              </div>
+            </div>
+          )}
+
+          {checkBadge(frontmatter.median_year_built) && (
+            <div class="h-full flex flex-col justify-between bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+              <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500 rounded-l-2xl"></div>
+              <div class="pl-2">
+                <span class="block text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-between">
+                    Median Year Built
+                    <svg class="w-4 h-4 text-indigo-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
+                </span>
+                <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{frontmatter.median_year_built}</span>
+              </div>
+              <div class="mt-4 pl-2 text-[10px] text-slate-400 font-semibold tracking-wide border-t border-slate-100 pt-3">
+                Source: <a href="https://www.census.gov/programs-surveys/acs" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-600 transition-colors">US Census ACS Data</a>
+              </div>
+            </div>
+          )}
+
+          {checkBadge(frontmatter.median_home_value) && (
+            <div class="h-full flex flex-col justify-between bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+              <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-l-2xl"></div>
+              <div class="pl-2">
+                <span class="block text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-between">
+                    Property Index
+                    <svg class="w-4 h-4 text-emerald-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </span>
+                <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">${formatDollar(frontmatter.median_home_value)}</span>
+              </div>
+              <div class="mt-4 pl-2 text-[10px] text-slate-400 font-semibold tracking-wide border-t border-slate-100 pt-3">
+                Source: <a href="https://www.census.gov/programs-surveys/acs" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-600 transition-colors">US Census ACS Data</a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT & SIDEBAR SPLIT -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+
+        <!-- Markdown Body (Matches Calculator Width) -->
+        <div class="lg:col-span-7 xl:col-span-8 w-full">
+            <article class="text-justify prose prose-lg sm:prose-xl prose-slate max-w-none
+            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900
+            prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mb-8
+            prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-slate-200
+            prose-p:text-slate-600 prose-p:leading-relaxed prose-p:mb-6
+            prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-a:break-all
+            prose-strong:text-slate-900 prose-strong:font-bold
+            prose-li:text-slate-600 prose-li:marker:text-blue-500
+            prose-img:rounded-2xl prose-img:shadow-lg">
+                <div set:html={htmlContent} />
+            </article>
+
+            <!-- DATA SOURCES & METHODOLOGY DISCLAIMER -->
+            <div class="mt-12 mb-12 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 flex items-start gap-5">
+                <div class="bg-blue-100/50 p-2.5 rounded-full shrink-0 border border-blue-200 text-blue-600">
+                    <svg class="w-6 h-6 outline-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-extrabold text-slate-900 uppercase tracking-widest mb-1.5">Fact-Checked & Geotechnically Verified</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        The insights and data variables referenced in this {frontmatter.city} {frontmatter.zip_code} structural report are aggregated directly from official United States Department of Agriculture (USDA) soil surveys, US Census demographics, and prevailing structural engineering literature.
+                        <br class="hidden sm:block"/><a href="/methodology" class="text-blue-600 font-semibold hover:underline mt-2 inline-block">Review our Data Methodology &rarr;</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- SEO CLUSTERING RING (Link Juice) — zmiana: cityZipMap zamiast uniqueCities -->
+            <ServiceAreas state={frontmatter.state_abbr} city={frontmatter.city} cityZipMap={cityZipMap} uniqueCities={uniqueStateCities} />
+        </div>
+
+        <!-- Sidebar Layout (Matches Badges Grid Width) -->
+        <div id="lead-gen" class="lg:col-span-5 xl:col-span-4 w-full max-w-md mx-auto lg:max-w-none relative">
+          <!-- The Sticky Lead Gen Component -->
+          <div class="sticky top-24 pt-4 lg:pt-0">
+            <LeadGenForm
+                city={frontmatter.city}
+                stateFull={frontmatter.state_full}
+                county={frontmatter.county}
+                zipCode={frontmatter.zip_code}
+            />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</Layout>

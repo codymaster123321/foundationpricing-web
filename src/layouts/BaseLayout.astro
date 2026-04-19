@@ -1,0 +1,30 @@
+---
+import '../styles/global.css';
+
+const { title = "Foundation Pricing // Technical Threat Intelligence" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-terminal-bg text-terminal-text font-mono min-h-screen flex flex-col m-0 p-0 antialiased">
+    
+    <header class="border-b-2 border-gray-800 p-4">
+      <h1 class="text-xl font-bold uppercase tracking-widest text-alert-red">Foundation Pricing // Technical Threat Intelligence</h1>
+    </header>
+
+    <main class="flex-grow p-4 lg:p-8">
+      <slot />
+    </main>
+
+    <footer class="border-t-2 border-gray-800 p-4 text-center">
+      <p class="text-xs text-gray-500 uppercase tracking-wide">
+        SYSTEM DISCLAIMER: DATA AGGREGATION ONLY. NOT A foundation repair professionalING DIAGNOSIS.
+      </p>
+    </footer>
+
+  </body>
+</html>

@@ -1,0 +1,44 @@
+---
+// Zmiana: uniqueCities (string[]) + cityZipMap (Record<string,string>) zamiast tylko uniqueCities
+const { state, city, uniqueCities = [], cityZipMap = {} } = Astro.props;
+
+// Znajdujemy indeks obecnego miasta w alfabetycznej liście
+const currentIndex = uniqueCities.findIndex(c => c.toLowerCase() === city.toLowerCase());
+
+let nearbyCities = [];
+if (uniqueCities.length > 1 && currentIndex !== -1) {
+  // THE PERFECT SEO RING: Bierzemy kolejne 8 miast w kolejności alfabetycznej i zapętlamy tablicę.
+  const numLinks = Math.min(8, uniqueCities.length - 1);
+  for (let i = 1; i <= numLinks; i++) {
+    const nextIndex = (currentIndex + i) % uniqueCities.length;
+    nearbyCities.push(uniqueCities[nextIndex]);
+  }
+}
+---
+
+{nearbyCities.length > 0 && (
+  <div class="mt-16 pt-10 border-t border-gray-200">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold tracking-widest uppercase mb-4 shadow-sm border border-slate-200">
+      Regional Coverage
+    </div>
+    <h3 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6 tracking-tight">Other Service Areas in {state.toUpperCase()}</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+      {nearbyCities.map((nearbyCity) => {
+        const nearbyZip = cityZipMap[nearbyCity] || '';
+        const nearbySlug = nearbyCity.toLowerCase().replace(/ /g, '-');
+        const href = nearbyZip ? `/${state.toLowerCase()}/${nearbySlug}-${nearbyZip}` : '#';
+        return (
+        <a
+          href={href}
+          class="flex items-center gap-2.5 text-gray-600 hover:text-blue-700 bg-gray-50 hover:bg-blue-50 px-4 py-3 sm:py-4 rounded-xl border border-gray-100 hover:border-blue-200 shadow-sm hover:shadow transition-all text-sm font-medium group"
+        >
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 group-hover:text-blue-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="truncate">{nearbyCity}{nearbyZip ? " " + nearbyZip : ""}</span>
+        </a>
+      )})}
+    </div>
+  </div>
+)}

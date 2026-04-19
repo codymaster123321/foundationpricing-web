@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LeadGenForm from '../../components/LeadGenForm.astro';
+
+export async function getStaticPaths() {
+    // Dynamiczny skaner całego The Knowledge Base Directory (via Vite eager import)
+    const rawArticles = import.meta.glob('../../data/knowledge-base/*.md', { eager: true });
+    const allArticlesList = Object.values(rawArticles);
+    
+    return allArticlesList.map((article: any) => {
+        // Generujemy the Slug zrzutowany perfekcyjnie do pliku (Wspiera UNIX / Windows)
+        const fileUrl = article.file;
+        const filename = fileUrl.split(/[/\\]/).pop();
+        const slug = filename ? filename.replace('.md', '') : 'unknown-guide';
+        
+        return {
+            params: { slug },
+            props: { article }
+        };
+    });
+}
+
+// Przejęcie the Props and The Astro Runtime Content Component
+const { article } = Astro.props;
+const { title, description, category } = article.frontmatter;
+
+// Wyjęcie Content componentu do wyrenderowania ciała Markdown the AST
+const { Content } = article;
+
+// Generate Read Next Articles (The Silo)
+// Re-fetch all articles directly in component body to avoid passing large un-serializable arrays through getStaticPaths in Dev mode
+const rawArticles = import.meta.glob('../../data/knowledge-base/*.md', { eager: true });
+const allArticles = Object.values(rawArticles);
+
+const currentFileUrl = article.file;
+const otherArticles = allArticles.filter((a: any) => a.file !== currentFileUrl);
+// Zabezpieczenie ilości, np. bierzemy top 3
+const readNext = otherArticles.slice(0, 3).map((a: any) => {
+    const filename = a.file.split(/[/\\]/).pop();
+    const slug = filename ? filename.replace('.md', '') : '';
+    return { ...a.frontmatter, slug };
+});
+---
+
+<Layout 
+  title={`${title} | Foundation Pricing Knowledge Base`}
+  description={description || `Comprehensive geotechnical guide from Foundation Pricing Data.`}
+>
+  <!-- BREADCRUMBS -->
+  <nav class="bg-gray-100 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs sm:text-sm text-gray-500 overflow-x-auto whitespace-nowrap">
+      <div class="flex items-center gap-2">
+        <a href="/" class="hover:text-blue-600 transition-colors font-medium">Home</a>
+        <span class="text-gray-400">/</span>
+        <a href="/knowledge-base" class="hover:text-blue-600 transition-colors font-medium">Knowledge Base</a>
+        <span class="text-gray-400">/</span>
+        <span class="font-bold text-gray-800">{title}</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT & SIDEBAR SPLIT -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        
+        <!-- Markdown Body Container (Span 8) -->
+        <div class="lg:col-span-8 w-full order-last lg:order-first">
+            <article class="prose prose-lg sm:prose-xl prose-blue max-w-none break-words
+            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-gray-900
+            prose-h1:text-4xl sm:prose-h1:text-5xl prose-h1:mb-8 prose-h1:leading-tight prose-h1:mt-0
+            prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-gray-200
+            prose-p:text-gray-600 prose-p:leading-relaxed prose-p:mb-6
+            prose-a:text-blue-700 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline prose-a:break-all
+            prose-li:text-gray-600 prose-li:mb-2
+            prose-table:w-full prose-table:border-collapse prose-table:text-sm sm:prose-table:text-base prose-table:mb-10 prose-table:mt-4 prose-table:shadow-sm
+            prose-th:bg-blue-900 prose-th:text-white prose-th:font-bold prose-th:p-4 prose-th:text-left prose-th:border prose-th:border-blue-900
+            prose-td:p-4 prose-td:border prose-td:border-gray-200 prose-td:align-top
+            prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:p-4 prose-blockquote:italic prose-blockquote:text-gray-700
+            prose-img:rounded-xl prose-img:shadow-md">
+                
+                <!-- Native Render Astro Contentu z the MD pliku -->
+                <Content />
+                
+                <div class="mt-8 pt-6 border-t border-slate-200 text-sm text-slate-500">
+                  <p>
+                    <span class="font-semibold text-slate-700">✓ Fact-Checked & Editorial Standards:</span> 
+                    This article was developed based on an in-depth analysis of multiple independent and reliable sources. Our goal is to synthesize current knowledge, specialized publications, and publicly available data to provide a reliable and comprehensive overview of the topic.
+                  </p>
+                </div>
+                
+            </article>
+
+            <!-- READ NEXT SILO -->
+            <div class="mt-16 pt-10 border-t-2 border-gray-100">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900 tracking-tight">Read Next in Our Knowledge Base</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {readNext.map((item: any) => (
+                        <a href={`/knowledge-base/${item.slug}`} class="block group h-full">
+                            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col hover:border-blue-300">
+                                <span class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3 block">{item.category}</span>
+                                <h4 class="text-lg font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight mb-3 line-clamp-3">{item.title}</h4>
+                                <p class="text-sm text-gray-500 line-clamp-3 mt-auto">{item.description}</p>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Layout (Matches the PPC structure) -->
+        <div class="lg:col-span-4 w-full max-w-md mx-auto lg:max-w-none relative order-first lg:order-last">
+          <!-- The Sticky PPC Lead Gen Component -->
+          <div class="sticky top-10 flex flex-col gap-4">
+            <!-- Reuse our LeadGenForm widget, keeping placeholders since we don't have a specific geo here unless provided. The form adapts context. -->
+            <LeadGenForm 
+                city="Your Local Area"
+                stateFull="US"
+                county="Regional"
+                zipCode="ZIP"
+            />
+            
+            <!-- Secondary Soft CTA (CRO) -->
+            <a href="/" class="w-full flex items-center justify-center text-center px-4 py-4 bg-slate-50 border-2 border-blue-300 text-blue-700 font-bold rounded-xl hover:bg-blue-50 hover:text-blue-800 hover:border-blue-400 transition-all shadow-sm">
+                Check Foundation Repair Costs in Your Zip Code
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+</Layout>

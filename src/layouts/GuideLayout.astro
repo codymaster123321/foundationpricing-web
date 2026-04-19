@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Foundation Pricing Engineering Knowledge Base</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="min-h-screen antialiased bg-background-light text-text-obsidian flex flex-col pt-8 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto w-full mb-16">
+        <header class="mb-12 border-b-4 border-alert-red pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <a href="/" class="text-primary hover:text-alert-red transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-widest font-data">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    RETURN TO NATIONAL DATABASE
+                </a>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-black text-primary tracking-tighter uppercase font-display bg-surface-white inline-block p-4 border-2 border-primary shadow-brutal">
+                Foundation Pricing // ENGINEERING KNOWLEDGE BASE
+            </h1>
+        </header>
+
+        <main class="w-full bg-surface-white brutal-border p-8 md:p-12 shadow-brutal prose prose-Foundation Pricing max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-a:text-primary prose-a:font-bold prose-strong:text-alert-red prose-p:font-medium">
+            <slot />
+        </main>
+    </div>
+
+    <footer class="w-full bg-primary text-white/50 py-8 px-8 flex justify-between items-center text-[10px] font-data uppercase tracking-widest mt-auto">
+        <div>GEN_LOG: KNOWLEDGE_BASE_VIEW</div>
+        <div class="flex gap-8">
+            <span>© 2026 GEOTHREAT SYSTEMS INC</span>
+            <a href="/disclaimer/" class="hover:text-white transition-colors hover:underline">SYSTEM DISCLAIMER: DATA AGGREGATION ONLY. NOT A foundation repair professionalING DIAGNOSIS.</a>
+        </div>
+    </footer>
+</body>
+</html>

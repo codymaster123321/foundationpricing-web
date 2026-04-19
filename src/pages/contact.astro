@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const navLinks = [
+  { text: 'About Us', href: '/about_us' },
+  { text: 'Data Methodology', href: '/methodology' },
+  { text: 'Terms of Service', href: '/terms' },
+  { text: 'Privacy Policy', href: '/privacy' },
+  { text: 'Contact & Partnerships', href: '/contact' }
+];
+---
+
+<Layout title="Contact Us | Foundation Pricing Data">
+  <div class="bg-gray-50 min-h-screen border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        
+        {/* Left Sidebar Navigation - System Docs Style */}
+        <aside class="lg:col-span-3 hidden lg:block">
+          <div class="sticky top-28 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <div class="text-xs font-bold tracking-widest uppercase text-gray-400 mb-4">Corporate Info</div>
+            <nav class="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <a 
+                  href={link.href} 
+                  class={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${'/contact'.includes(link.href) ? 'bg-blue-50 text-blue-700 bg-opacity-80' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'}`}
+                >
+                  {link.text}
+                </a>
+              ))}
+            </nav>
+            <div class="mt-8 pt-6 border-t border-gray-100">
+              <div class="text-xs text-gray-400 font-medium mb-2">Platform System</div>
+              <div class="flex items-center gap-2 text-xs text-green-600 font-bold bg-green-50 px-2.5 py-1.5 rounded-md w-max">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Systems Operational
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <main class="lg:col-span-9">
+          
+          {/* Header Block */}
+          <div class="mb-10 lg:mb-14">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold tracking-wide mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Corporate Inquiries
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+              Contact & Partnerships
+            </h1>
+            <p class="mt-4 text-xl text-gray-500 font-medium leading-relaxed max-w-3xl">
+              Connect with our data operations team for B2B partnerships, algorithmic methodology inquiries, and corporate communications.
+            </p>
+            <hr class="mt-10 border-gray-200" />
+          </div>
+
+          {/* Contact Cards Grid */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            
+            {/* Primary Contact Card */}
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-start relative overflow-hidden group hover:border-blue-300 hover:shadow-md transition-all">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 opacity-50 z-0"></div>
+                
+                <div class="bg-blue-100/50 border border-blue-100 p-3 rounded-xl text-blue-700 mb-6 z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                    </svg>
+                </div>
+                
+                <h2 class="text-xl font-bold text-gray-900 mb-3 z-10">General & Partnerships</h2>
+                <p class="text-gray-600 mb-8 leading-relaxed text-sm z-10 flex-grow">
+                    For business development, methodology auditing, press inquiries, or advertising network opportunities. We typically respond within 24-48 business hours.
+                </p>
+                
+                <a href="mailto:foundationpricing@gmail.com" class="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors no-underline z-10 group-hover:bg-blue-700">
+                    Email Operations Team
+                </a>
+            </div>
+
+            {/* Disclaimer Card */}
+            <div class="bg-gray-100/50 p-8 rounded-2xl border border-gray-200 flex flex-col items-start">
+                <div class="bg-gray-200/50 border border-gray-200 p-3 rounded-xl text-gray-500 mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                
+                <h2 class="text-xl font-bold text-gray-800 mb-3 text-left">Consumer Notice</h2>
+                <div class="text-gray-600 leading-relaxed text-sm space-y-4">
+                    <p>
+                        We operate strictly as a data analytics aggregator and <strong>do not provide specific engineering or cost estimates over email.</strong>
+                    </p>
+                    <p>
+                        If you are a homeowner facing immediate structural issues, please utilize the toll-free network numbers provided on your specific city analysis page to connect with a recommended local professional.
+                    </p>
+                </div>
+            </div>
+            
+          </div>
+          
+          {/* Mobile Navigation Footer */}
+          <div class="mt-8 lg:hidden bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <div class="text-xs font-bold tracking-widest uppercase text-gray-500 mb-3">More Information</div>
+            <nav class="flex flex-wrap gap-2">
+              {navLinks.map((link) => (
+                <a 
+                  href={link.href} 
+                  class={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${'/contact'.includes(link.href) ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                >
+                  {link.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+</Layout>

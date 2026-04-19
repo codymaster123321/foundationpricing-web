@@ -1,0 +1,210 @@
+{
+  "TX": {
+    "reportCount": 1470,
+    "avg_usda_index": 28.0
+  },
+  "CA": {
+    "reportCount": 1419,
+    "avg_usda_index": 19.1
+  },
+  "FL": {
+    "reportCount": 914,
+    "avg_usda_index": 3.7
+  },
+  "OK": {
+    "reportCount": 400,
+    "avg_usda_index": 18.8
+  },
+  "CO": {
+    "reportCount": 341,
+    "avg_usda_index": 18.8
+  },
+  "PR": {
+    "reportCount": 56,
+    "avg_usda_index": 39.1
+  },
+  "MA": {
+    "reportCount": 95,
+    "avg_usda_index": 5.8
+  },
+  "RI": {
+    "reportCount": 16,
+    "avg_usda_index": 5.6
+  },
+  "NH": {
+    "reportCount": 13,
+    "avg_usda_index": 3.0
+  },
+  "ME": {
+    "reportCount": 6,
+    "avg_usda_index": 13.2
+  },
+  "VT": {
+    "reportCount": 1,
+    "avg_usda_index": 0.0
+  },
+  "CT": {
+    "reportCount": 49,
+    "avg_usda_index": 9.0
+  },
+  "NJ": {
+    "reportCount": 131,
+    "avg_usda_index": 11.1
+  },
+  "NY": {
+    "reportCount": 269,
+    "avg_usda_index": 12.8
+  },
+  "PA": {
+    "reportCount": 152,
+    "avg_usda_index": 18.9
+  },
+  "DE": {
+    "reportCount": 16,
+    "avg_usda_index": 11.9
+  },
+  "DC": {
+    "reportCount": 11,
+    "avg_usda_index": 14.7
+  },
+  "VA": {
+    "reportCount": 135,
+    "avg_usda_index": 16.5
+  },
+  "MD": {
+    "reportCount": 107,
+    "avg_usda_index": 14.6
+  },
+  "WV": {
+    "reportCount": 7,
+    "avg_usda_index": 19.3
+  },
+  "NC": {
+    "reportCount": 157,
+    "avg_usda_index": 16.1
+  },
+  "SC": {
+    "reportCount": 75,
+    "avg_usda_index": 12.3
+  },
+  "GA": {
+    "reportCount": 169,
+    "avg_usda_index": 16.8
+  },
+  "AL": {
+    "reportCount": 40,
+    "avg_usda_index": 16.7
+  },
+  "TN": {
+    "reportCount": 92,
+    "avg_usda_index": 21.6
+  },
+  "MS": {
+    "reportCount": 25,
+    "avg_usda_index": 14.3
+  },
+  "KY": {
+    "reportCount": 54,
+    "avg_usda_index": 21.2
+  },
+  "OH": {
+    "reportCount": 148,
+    "avg_usda_index": 20.6
+  },
+  "IN": {
+    "reportCount": 92,
+    "avg_usda_index": 18.8
+  },
+  "MI": {
+    "reportCount": 132,
+    "avg_usda_index": 12.3
+  },
+  "IA": {
+    "reportCount": 32,
+    "avg_usda_index": 25.4
+  },
+  "WI": {
+    "reportCount": 76,
+    "avg_usda_index": 17.7
+  },
+  "MN": {
+    "reportCount": 79,
+    "avg_usda_index": 13.7
+  },
+  "SD": {
+    "reportCount": 8,
+    "avg_usda_index": 26.9
+  },
+  "ND": {
+    "reportCount": 12,
+    "avg_usda_index": 31.0
+  },
+  "MT": {
+    "reportCount": 12,
+    "avg_usda_index": 27.2
+  },
+  "IL": {
+    "reportCount": 185,
+    "avg_usda_index": 26.3
+  },
+  "MO": {
+    "reportCount": 71,
+    "avg_usda_index": 20.8
+  },
+  "KS": {
+    "reportCount": 25,
+    "avg_usda_index": 26.0
+  },
+  "NE": {
+    "reportCount": 21,
+    "avg_usda_index": 25.6
+  },
+  "LA": {
+    "reportCount": 60,
+    "avg_usda_index": 35.4
+  },
+  "AR": {
+    "reportCount": 34,
+    "avg_usda_index": 14.8
+  },
+  "WY": {
+    "reportCount": 7,
+    "avg_usda_index": 19.4
+  },
+  "ID": {
+    "reportCount": 28,
+    "avg_usda_index": 15.9
+  },
+  "UT": {
+    "reportCount": 62,
+    "avg_usda_index": 20.0
+  },
+  "AZ": {
+    "reportCount": 130,
+    "avg_usda_index": 21.4
+  },
+  "NM": {
+    "reportCount": 29,
+    "avg_usda_index": 13.9
+  },
+  "NV": {
+    "reportCount": 60,
+    "avg_usda_index": 14.6
+  },
+  "HI": {
+    "reportCount": 24,
+    "avg_usda_index": 40.7
+  },
+  "OR": {
+    "reportCount": 72,
+    "avg_usda_index": 20.1
+  },
+  "WA": {
+    "reportCount": 137,
+    "avg_usda_index": 11.1
+  },
+  "AK": {
+    "reportCount": 9,
+    "avg_usda_index": 5.0
+  }
+}

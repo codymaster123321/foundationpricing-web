@@ -1,0 +1,330 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ZipSearch from '../../components/ZipSearch.jsx';
+import LeadGenForm from '../../components/LeadGenForm.astro';
+import StateReportAccordion from '../../components/StateReportAccordion.jsx';
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  // O(1) NATIVE FS RESOLVER
+  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md'));
+  
+  const stateMap = {};
+
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(reportsDir, file), 'utf-8');
+
+    const stateAbbrMatch = content.match(/state_abbr:\s*['"]?([A-Z]{2})['"]?/);
+    const stateFullMatch = content.match(/state_full:\s*['"]?([^'"\n]+)['"]?/);
+    const cityMatch = content.match(/city:\s*['"]?([^'"\n]+)['"]?/);
+    const zipMatch = content.match(/zip_code:\s*['"]?(\d+)['"]?/);
+
+    if (stateAbbrMatch && stateFullMatch && cityMatch && zipMatch) {
+      const stateAbbr = stateAbbrMatch[1].toLowerCase();
+      const stateFull = stateFullMatch[1];
+      const cityName = cityMatch[1];
+      const citySlug = cityName.toLowerCase().replace(/ /g, '-');
+      const zip = zipMatch[1];
+
+      if (!stateMap[stateAbbr]) {
+        stateMap[stateAbbr] = { stateFull: stateFull, cities: [] };
+      }
+
+      // NO DEDUPLICATION - Every ZIP gets its own entry
+      stateMap[stateAbbr].cities.push({ cityName, citySlug, zip });
+    }
+  }
+
+  return Object.keys(stateMap).map((stateAbbr) => {
+    const stateData = stateMap[stateAbbr];
+    
+    // Sort primarily by City Name, then by ZIP Code
+    stateData.cities.sort((a, b) => {
+        const cityCompare = a.cityName.localeCompare(b.cityName);
+        if (cityCompare !== 0) return cityCompare;
+        return a.zip.localeCompare(b.zip);
+    });
+
+    return {
+      params: { state: stateAbbr },
+      props: {
+        stateFull: stateData.stateFull,
+        cities: stateData.cities
+      },
+    };
+  });
+}
+
+const { state } = Astro.params;
+const { stateFull, cities } = Astro.props;
+
+// Dynamicznie ładujemy plik markdown ze `src/data/state_reports/`
+const stateReports = import.meta.glob('../../data/state_reports/*.md');
+const stateSlug = stateFull.toLowerCase().replace(/ /g, '-');
+const reportPath = `../../data/state_reports/${stateSlug}.md`;
+let StateReportContent = null;
+
+if (stateReports[reportPath]) {
+  const reportLoader = stateReports[reportPath];
+  const mod = await reportLoader();
+  StateReportContent = mod.Content;
+}
+---
+
+<Layout 
+  title={`Foundation Repair Costs & Soil Data in ${stateFull} | Foundation Pricing`}
+  description={`Access hyper-local geotechnical reports, building code history, and live foundation repair estimates for cities across ${stateFull}.`}
+>
+  <!-- BREADCRUMBS -->
+  <nav class="bg-white border-b border-slate-200/60 sticky top-0 z-40 bg-white/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs sm:text-sm text-slate-500 overflow-x-auto whitespace-nowrap">
+      <div class="flex items-center gap-2">
+        <a href="/" class="hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
+        </a>
+        <span class="text-slate-300">/</span>
+        <a href={`/${state}`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-blue-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {stateFull}
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="bg-slate-50 border-b border-slate-200 py-16 sm:py-24 relative overflow-hidden">
+    {/* Subtelny Grid Analityczny tła */}
+    <div class="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] bg-[size:32px_32px] opacity-40"></div>
+    <div class="absolute top-0 right-0 p-32 bg-blue-100/50 blur-[120px] w-[600px] h-[600px] rounded-full pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- FALLBACK ZIP BANNER (The Cybernetic Toast) -->
+      <div id="fallback-banner" style="display: none;" class="max-w-4xl mb-10 p-5 sm:p-6 bg-white border border-blue-100 rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-4 relative overflow-hidden ring-1 ring-slate-900/5 group">
+          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500"></div>
+          <div class="flex items-start gap-4">
+              <div class="bg-blue-50/50 rounded-xl p-2.5 flex-shrink-0 mt-1 border border-blue-100">
+                  <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+              </div>
+              <div class="flex-1">
+                  <h3 class="text-lg font-extrabold text-slate-900 mb-2 tracking-tight">Geotechnical Report Initialized</h3>
+                  <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+                    We are synthesizing the deep structural and soil history report for ZIP <strong class="text-blue-700 bg-blue-50 px-1 py-0.5 rounded border border-blue-100" id="fallback-zip-code">XXXXX</strong>. Our data systems provide continuous statewide coverage across <strong class="text-slate-800">{stateFull}</strong>. 
+                  </p>
+                  <div class="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 bg-gray-500 text-white font-bold rounded-xl shadow-md mb-3 opacity-75">📞 Quote Available Soon</div>
+                  <p class="text-[10px] text-slate-400 font-medium mt-1 uppercase tracking-wider">
+                    Secure routing protocol • We may earn a referral fee for connected inquiries.
+                  </p>
+              </div>
+          </div>
+      </div>
+
+      <script is:inline>
+          document.addEventListener('DOMContentLoaded', () => {
+              const urlParams = new URLSearchParams(window.location.search);
+              const fallbackZip = urlParams.get('zip');
+              if (fallbackZip && /^\d{5}$/.test(fallbackZip)) {
+                  const banner = document.getElementById('fallback-banner');
+                  const targetSpan = document.getElementById('fallback-zip-code');
+                  if (banner && targetSpan) {
+                      targetSpan.textContent = fallbackZip;
+                      banner.style.display = 'block';
+                      // Oczyszczamy URL, ułatwiając udostępnianie linku z czystym UX
+                      window.history.replaceState({}, document.title, window.location.pathname);
+                  }
+              }
+          });
+      </script>
+
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-blue-600 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm border border-blue-100">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping"></span>
+            State Directory Hub
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-[1.1]">
+          Foundation Repair Costs <br class="hidden sm:block"/> & Soil Data in <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">{stateFull}</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-600 leading-relaxed font-medium mb-10 max-w-3xl">
+          Select your city below to access hyper-local geotechnical reports, historical building code history, and algorithmic foundation repair estimates specific to your {stateFull} region.
+        </p>
+        <section class="mt-8 prose prose-lg prose-slate max-w-3xl text-slate-600">
+          <p>
+            {stateFull} features diverse geological challenges, ranging from expansive clay soils to sudden drought conditions. Understanding your local geotechnical landscape is the first step in protecting your property's foundation from severe structural settling and hydrostatic pressure.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SEARCH BANNER -->
+  <section class="bg-slate-900 border-y border-slate-800 py-10 relative shadow-inner z-20 overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPjwvc3ZnPg==')] opacity-10 pointer-events-none"></div>
+    <div class="absolute top-1/2 right-10 -translate-y-1/2 w-[400px] h-[400px] bg-blue-500/20 blur-[100px] rounded-full mix-blend-screen pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 text-blue-300 text-[10px] font-bold tracking-widest uppercase mb-3 border border-slate-700">
+                Direct Search Input
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">Want faster results?</h3>
+            <p class="text-slate-400 font-medium">Skip the state directory and pinpoint your block via 5-digit ZIP array.</p>
+        </div>
+        <div class="w-full md:w-auto md:min-w-[450px] relative z-30">
+            <ZipSearch client:load />
+        </div>
+    </div>
+  </section>
+
+  <!-- CITY DIRECTORY GRID -->
+  <section class="py-16 sm:py-24 bg-white flex-1 relative overflow-hidden">
+    {/* Grid tła siatkowe */}
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEyaDI0IiBzdHJva2U9InJnYmEoMTUsMjMsNDIsMC4wMikiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0xMiAwdjI0IiBzdHJva2U9InJnYmEoMTUsMjMsNDIsMC4wMikiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="mb-10 pb-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Available Region Arrays in {stateFull}</h2>
+          <p class="text-slate-500 font-medium mt-2">Continuous geotechnical monitoring</p>
+        </div>
+        <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md border border-blue-100 shadow-sm uppercase tracking-widest">{cities.length} System Records</span>
+      </div>
+
+      <div class="relative">
+        <div id="city-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3 sm:gap-y-4 overflow-hidden" style="max-height: 280px; transition: max-height 0.5s ease-in-out;">
+          {cities.map((city) => (
+            <a href={`/${state}/${city.citySlug}-${city.zip}`} class="group relative bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200 group-hover:bg-blue-500 transition-colors"></div>
+                <div class="flex items-center gap-3 pl-1 min-w-0">
+                    <div class="w-8 h-8 rounded shrink-0 bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        </svg>
+                    </div>
+                    <span class="text-[14px] font-semibold text-slate-700 truncate group-hover:text-blue-700 transition-colors">{city.cityName} {city.zip}</span>
+                </div>
+                <svg class="w-4 h-4 text-slate-300 group-hover:text-blue-500 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                 </svg>
+            </a>
+          ))}
+        </div>
+        
+        <!-- Gradient Overlay -->
+        <div id="grid-overlay" class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none"></div>
+      </div>
+      
+      <div class="mt-8 text-center" id="show-more-wrapper">
+        <button id="show-more-btn" 
+          data-text-collapsed={`Show all ${cities.length} regions in ${stateFull}`}
+          data-text-expanded="Collapse regions vector"
+          class="inline-flex items-center justify-center gap-2 bg-white border border-slate-300 hover:border-blue-300 hover:shadow hover:bg-slate-50 text-slate-700 hover:text-blue-600 font-bold py-3 px-8 rounded-xl shadow-sm transition-all focus:outline-none ring-2 ring-transparent focus:ring-blue-100">
+          <span id="show-more-text">Show all {cities.length} regions in {stateFull}</span>
+          <svg id="show-more-icon" class="w-5 h-5 transition-transform duration-300 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+
+      <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+          const btn = document.getElementById('show-more-btn');
+          const textSpan = document.getElementById('show-more-text');
+          const iconSvg = document.getElementById('show-more-icon');
+          const container = document.getElementById('city-grid-container');
+          const overlay = document.getElementById('grid-overlay');
+          const wrapper = document.getElementById('show-more-wrapper');
+          
+          let isExpanded = false;
+          
+          if(btn && container) {
+             // Opcjonalne przejście css dla nakładki u dołu
+             if(overlay) overlay.style.transition = 'opacity 0.4s ease-in-out';
+
+             if(container.scrollHeight <= 280) {
+                 wrapper.style.display = 'none';
+                 if(overlay) overlay.style.display = 'none';
+             }
+
+             btn.addEventListener('click', () => {
+                 isExpanded = !isExpanded;
+
+                 if (isExpanded) {
+                     // Skrypt rozwijania
+                     container.style.maxHeight = container.scrollHeight + "px";
+                     if(overlay) overlay.style.opacity = '0';
+                     textSpan.textContent = btn.getAttribute('data-text-expanded');
+                     iconSvg.style.transform = 'rotate(180deg)';
+                 } else {
+                     // Skrypt zwijania
+                     container.style.maxHeight = "280px";
+                     if(overlay) overlay.style.opacity = '1';
+                     textSpan.textContent = btn.getAttribute('data-text-collapsed');
+                     iconSvg.style.transform = 'rotate(0deg)';
+                     
+                     // Płynny powrót do widoku nagłówka sekcji, by po zwinięciu dużej listy użytkownik nie skakał w próżni
+                     window.scrollTo({
+                         top: container.getBoundingClientRect().top + window.scrollY - 100,
+                         behavior: 'smooth'
+                     });
+                 }
+             });
+          }
+        });
+      </script>
+    </div>
+  </section>
+
+  <!-- SEO LONG-FORM CONTENT (75/25 Grid with Accordion) -->
+  {StateReportContent && (
+  <section class="bg-white py-16 sm:py-24 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        
+        <!-- Main Column: Accordion + Markdown -->
+        <div class="lg:col-span-8 w-full z-10">
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight mb-8 hidden">
+              Foundation Geotechnical Data for {stateFull}
+            </h2>
+            <StateReportAccordion client:load>
+               <article class="text-justify prose prose-slate sm:prose-lg max-w-none 
+                prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-gray-900
+                prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mb-8
+                prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-gray-200
+                prose-p:text-gray-600 prose-p:leading-relaxed prose-p:mb-6
+                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-a:break-all
+                prose-strong:text-gray-900 prose-strong:font-bold
+                prose-li:text-gray-600 prose-li:marker:text-blue-500
+                prose-img:rounded-2xl prose-img:shadow-lg">
+                  <StateReportContent />
+               </article>
+            </StateReportAccordion>
+        </div>
+
+        <!-- Sidebar Column: Sticky LeadGenForm -->
+        <div class="lg:col-span-4 w-full relative">
+           <div class="sticky top-24 pt-4 lg:pt-0">
+              <LeadGenForm 
+                  city={stateFull}
+                  stateFull={stateFull}
+                  county="Statewide Coverage"
+                  zipCode="All Regions"
+              />
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  )}
+</Layout>

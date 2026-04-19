@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+export interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Discover local foundation repair costs and soil guides." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<slot name="head" />
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YQ46SCKE6N"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-YQ46SCKE6N');
+		</script>
+	</head>
+	<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+        <header class="bg-blue-900 text-white py-4 shadow-md sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                <div class="flex items-center gap-4 md:gap-6">
+                    <a href="/" class="text-xl sm:text-2xl font-extrabold tracking-tight hover:text-blue-200 transition-colors">Foundation<span class="text-blue-400 font-medium hidden sm:inline"> Pricing Data</span></a>
+                </div>
+                <div class="flex items-center">
+                    <span class="bg-blue-800 text-white font-bold flex items-center gap-2 py-2.5 px-5 md:px-6 rounded-lg shadow-md border border-white/30 text-sm sm:text-base opacity-75">📞 Coming Soon</span>
+                </div>
+            </div>
+        </header>
+		<main class="min-h-screen">
+			<slot />
+		</main>
+        <footer class="bg-gray-900 text-gray-300 py-12 mt-16 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+                    <!-- Left Side: Brand & Disclaimers (Takes up 2 cols on medium, 2/4 total) -->
+                    <div class="md:col-span-2 space-y-4">
+                        <p class="font-medium text-white text-base">&copy; {new Date().getFullYear()} Foundation Pricing Data. All rights reserved.</p>
+                        <div class="text-sm text-gray-400 space-y-3 leading-relaxed">
+                            <p>
+                                The estimates provided on this website are algorithmically generated aggregations based on historical Census and USDA Soil data. They do not constitute a formal engineering quote or structural assessment. Always consult a licensed local contractor or structural engineer for an on-site inspection.
+                            </p>
+                            <p class="text-xs text-gray-500 pt-3 border-t border-gray-800">
+                                This website is a free informational resource powered by public data. We may earn a referral fee or commission if you connect with a service provider through the phone numbers provided on this site.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Middle Column: Navigation 1 -->
+                    <div class="flex flex-col space-y-3 text-sm md:ml-auto">
+                        <p class="font-bold text-white mb-2 uppercase tracking-wide text-xs">Resources</p>
+                        <a href="/knowledge-base" class="hover:text-white transition-colors">Knowledge Base</a>
+                        <a href="/about_us" class="hover:text-white transition-colors">About Us</a>
+                        <a href="/contact" class="hover:text-white transition-colors">Contact</a>
+                    </div>
+
+                    <!-- Right Column: Navigation 2 -->
+                    <div class="flex flex-col space-y-3 text-sm md:ml-auto">
+                        <p class="font-bold text-white mb-2 uppercase tracking-wide text-xs">Legal & Data</p>
+                        <a href="/methodology" class="hover:text-white transition-colors">Data Methodology</a>
+                        <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+	</body>
+</html>

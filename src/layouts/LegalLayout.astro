@@ -1,0 +1,144 @@
+---
+import Layout from './Layout.astro';
+
+const { frontmatter } = Astro.props;
+
+// Tworzenie dynamicznego JSON-LD w zaleznosci od strony (Entity Resolution E-E-A-T)
+let schema = null;
+if (frontmatter.title.includes("About") || frontmatter.title.includes("Methodology")) {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "AboutPage"],
+    "name": "Foundation Pricing Data",
+    "description": "Independent programmatic data analytics aggregator for the US foundation repair industry.",
+    "url": "https://foundationpricing.com",
+    "knowsAbout": ["Foundation Repair Costs", "USDA Soil Data", "US Census Data", "Structural Engineering"],
+  };
+}
+
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  { text: 'About Us', href: '/about_us' },
+  { text: 'Data Methodology', href: '/methodology' },
+  { text: 'Terms of Service', href: '/terms' },
+  { text: 'Privacy Policy', href: '/privacy' },
+  { text: 'Contact & Partnerships', href: '/contact' }
+];
+---
+
+<Layout title={`${frontmatter.title} | Foundation Pricing Data`} description={frontmatter.description}>
+  {schema && (
+    <Fragment slot="head">
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    </Fragment>
+  )}
+
+  <div class="bg-gray-50 min-h-screen border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        
+        {/* Left Sidebar Navigation - System Docs Style */}
+        <aside class="lg:col-span-3 hidden lg:block">
+          <div class="sticky top-28 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <div class="text-xs font-bold tracking-widest uppercase text-gray-400 mb-4">Corporate Info</div>
+            <nav class="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <a 
+                  href={link.href} 
+                  class={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentPath.includes(link.href) ? 'bg-blue-50 text-blue-700 bg-opacity-80' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'}`}
+                >
+                  {link.text}
+                </a>
+              ))}
+            </nav>
+            <div class="mt-8 pt-6 border-t border-gray-100">
+              <div class="text-xs text-gray-400 font-medium mb-2">Platform System</div>
+              <div class="flex items-center gap-2 text-xs text-green-600 font-bold bg-green-50 px-2.5 py-1.5 rounded-md w-max">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Systems Operational
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <main class="lg:col-span-9">
+          
+          {/* Header Block */}
+          <div class="mb-10 lg:mb-14">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold tracking-wide mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+              Legal & Policy Document
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+              {frontmatter.title}
+            </h1>
+            {frontmatter.description && (
+              <p class="mt-4 text-xl text-gray-500 font-medium leading-relaxed max-w-3xl">
+                {frontmatter.description}
+              </p>
+            )}
+            <div class="mt-6 flex items-center text-sm text-gray-400 font-medium">
+              <span>Last verified: April 2026</span>
+              <span class="mx-3 text-gray-300">•</span>
+              <span>Foundation Pricing Data, LLC</span>
+            </div>
+            <hr class="mt-10 border-gray-200" />
+          </div>
+
+          {/* Prose Content */}
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-10 lg:p-12 relative overflow-hidden">
+            
+            {/* Subtle background tech pattern */}
+            <div class="absolute top-0 right-0 -mt-16 -mr-16 text-gray-50 opacity-50 z-0 pointer-events-none">
+              <svg width="300" height="300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 2V22" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12H22" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 2C14.5 4.5 16 8 16 12C16 16 14.5 19.5 12 22" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 2C9.5 4.5 8 8 8 12C8 16 9.5 19.5 12 22" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 12C19.5 9.5 16 8 12 8C8 8 4.5 9.5 2 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 12C19.5 14.5 16 16 12 16C8 16 4.5 14.5 2 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <article class="relative z-10 prose prose-slate prose-blue max-w-none 
+              prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-gray-900
+              prose-h1:text-3xl prose-h1:hidden
+              prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:text-blue-900
+              prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+              prose-p:text-gray-600 prose-p:leading-loose prose-p:mb-6
+              prose-a:text-blue-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline hover:prose-a:decoration-2 hover:prose-a:underline-offset-4 transition-all
+              prose-strong:text-gray-900 prose-strong:font-bold
+              prose-ul:my-6 prose-li:text-gray-600 prose-li:marker:text-blue-500
+              prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:text-gray-700 prose-blockquote:not-italic prose-blockquote:shadow-sm">
+              <slot />
+            </article>
+          </div>
+          
+          {/* Mobile Navigation Footer (visible only on small screens) */}
+          <div class="mt-8 lg:hidden bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <div class="text-xs font-bold tracking-widest uppercase text-gray-500 mb-3">More Information</div>
+            <nav class="flex flex-wrap gap-2">
+              {navLinks.map((link) => (
+                <a 
+                  href={link.href} 
+                  class={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${currentPath.includes(link.href) ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                >
+                  {link.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+</Layout>

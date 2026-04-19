@@ -1,0 +1,31 @@
+{
+  "name": "injector",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/react": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^6.0.4",
+    "marked": "^17.0.5",
+    "prop-types": "^15.8.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-simple-maps": "^3.0.0",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3"
+  }
+}

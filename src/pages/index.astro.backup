@@ -1,0 +1,198 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ZipSearch from '../components/ZipSearch.jsx';
+import UsaRiskMap from '../components/UsaRiskMap.jsx';
+import fs from 'node:fs';
+import path from 'node:path';
+
+let totalRegionsCount = 4500; // Fallback bazowy
+try {
+  const reportsDir = path.resolve(process.cwd(), '../driller/raw_reports');
+  if (fs.existsSync(reportsDir)) {
+    totalRegionsCount = fs.readdirSync(reportsDir).filter(f => f.endsWith('.md')).length;
+  }
+} catch(e) {
+  console.error("Home: Błąd odczytu ilości regionów:", e);
+}
+
+const formattedRegionsCount = totalRegionsCount.toLocaleString('en-US');
+
+// Ścisła walidacja 50 Stanów USA do wygenerowania Potężnego SEO SILO (Directory Hub) dla Google
+const STATES = [
+  { abbr: "AL", name: "Alabama" }, { abbr: "AK", name: "Alaska" }, { abbr: "AZ", name: "Arizona" },
+  { abbr: "AR", name: "Arkansas" }, { abbr: "CA", name: "California" }, { abbr: "CO", name: "Colorado" },
+  { abbr: "CT", name: "Connecticut" }, { abbr: "DE", name: "Delaware" }, { abbr: "DC", name: "District of Columbia" },
+  { abbr: "FL", name: "Florida" }, { abbr: "GA", name: "Georgia" }, { abbr: "HI", name: "Hawaii" },
+  { abbr: "ID", name: "Idaho" }, { abbr: "IL", name: "Illinois" }, { abbr: "IN", name: "Indiana" },
+  { abbr: "IA", name: "Iowa" }, { abbr: "KS", name: "Kansas" }, { abbr: "KY", name: "Kentucky" },
+  { abbr: "LA", name: "Louisiana" }, { abbr: "ME", name: "Maine" }, { abbr: "MD", name: "Maryland" },
+  { abbr: "MA", name: "Massachusetts" }, { abbr: "MI", name: "Michigan" }, { abbr: "MN", name: "Minnesota" },
+  { abbr: "MS", name: "Mississippi" }, { abbr: "MO", name: "Missouri" }, { abbr: "MT", name: "Montana" },
+  { abbr: "NE", name: "Nebraska" }, { abbr: "NV", name: "Nevada" }, { abbr: "NH", name: "New Hampshire" },
+  { abbr: "NJ", name: "New Jersey" }, { abbr: "NM", name: "New Mexico" }, { abbr: "NY", name: "New York" },
+  { abbr: "NC", name: "North Carolina" }, { abbr: "ND", name: "North Dakota" }, { abbr: "OH", name: "Ohio" },
+  { abbr: "OK", name: "Oklahoma" }, { abbr: "OR", name: "Oregon" }, { abbr: "PA", name: "Pennsylvania" },
+  { abbr: "RI", name: "Rhode Island" }, { abbr: "SC", name: "South Carolina" }, { abbr: "SD", name: "South Dakota" },
+  { abbr: "TN", name: "Tennessee" }, { abbr: "TX", name: "Texas" }, { abbr: "UT", name: "Utah" },
+  { abbr: "VT", name: "Vermont" }, { abbr: "VA", name: "Virginia" }, { abbr: "WA", name: "Washington" },
+  { abbr: "WV", name: "West Virginia" }, { abbr: "WI", name: "Wisconsin" }, { abbr: "WY", name: "Wyoming" }
+];
+---
+
+<Layout 
+  title="Foundation Repair Estimates & Local Soil Data | Foundation Pricing"
+  description="Instantly access algorithmic foundation repair cost estimates, historical building codes, and geotechnical data compiled from USPS and US Census systems."
+>
+  <!-- HERO SECTION: Koniunktura konwersyjna HCU -->
+  <section class="bg-gradient-to-b from-blue-900 to-indigo-950 border-b border-indigo-950 py-20 lg:py-32 relative flex items-center min-h-[500px] z-20">
+    
+    {/* Subtelny Grid Geometryczny tła budujący techniczny klimat inżynieryjny */}
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEyaDI0IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNikiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0xMiAwdjI0IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNikiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')] opacity-40"></div>
+    <div class="absolute top-0 right-0 p-32 bg-blue-500/10 w-96 h-96 rounded-full pointer-events-none" style="filter: blur(100px); overflow: hidden;"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center">
+      
+      {/* Telemetry Indicator */}
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-900/60 text-indigo-200 text-xs sm:text-sm font-bold tracking-widest uppercase mb-8 border border-indigo-500/30 backdrop-blur-sm shadow-xl">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]"></span>
+        System Online • Parsing {formattedRegionsCount} Regions
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-8 leading-[1.1] max-w-4xl text-center">
+        Data-Driven Foundation <br class="hidden sm:block"/> <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">Repair Estimates</span>
+      </h1>
+      
+      <p class="text-lg sm:text-xl text-blue-100/90 mb-14 max-w-2xl text-center leading-relaxed font-medium">
+        Access hyper-local geotechnical reports, historical construction data, and live algorithmic pricing for over {formattedRegionsCount} US ZIP codes.
+      </p>
+
+      {/* REACT ZIP SEARCH ENGINE */}
+      <div class="w-full max-w-2xl transform hover:scale-[1.01] transition-transform duration-300 relative z-30">
+          <ZipSearch client:load />
+      </div>
+
+      {/* AUTHORITY TRUST BADGES */}
+    <div class="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-center w-full max-w-4xl border-t border-indigo-800/40 pt-8 relative z-20">
+      <div class="text-indigo-200/60 text-xs font-semibold tracking-widest uppercase w-full mb-2">Architectural Data Sources</div>
+      
+      <div class="flex items-center gap-2 text-indigo-100 text-xs sm:text-sm font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-default bg-indigo-900/30 px-4 py-2 rounded-lg border border-indigo-800/50">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          <span class="mt-0.5">U.S. Census Bureau</span>
+      </div>
+      
+      <div class="flex items-center gap-2 text-indigo-100 text-xs sm:text-sm font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-default bg-indigo-900/30 px-4 py-2 rounded-lg border border-indigo-800/50">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+          <span class="mt-0.5">NOAA Climate</span>
+      </div>
+
+      <div class="flex items-center gap-2 text-indigo-100 text-xs sm:text-sm font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-default bg-indigo-900/30 px-4 py-2 rounded-lg border border-indigo-800/50">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+          <span class="mt-0.5">USDA Soils</span>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS: Sekcja Edukacyjna -->
+  <section class="py-24 sm:py-32 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-20">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">How Foundation Pricing Pipeline Works</h2>
+        <p class="text-gray-600 sm:text-lg leading-relaxed max-w-2xl mx-auto">
+          We process real-time soil surveys, localized labor indexes, and historical code violations across thousands of US territories to calculate data-driven repair costs.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 relative">
+        
+        {/* Liniowa ścieżka postępu dla Desktopu */}
+        <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gray-100 z-0"></div>
+
+        <!-- Krok 1 -->
+        <div class="relative z-10 text-center flex flex-col items-center group">
+            <div class="w-24 h-24 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-blue-900/5 border border-gray-100 group-hover:-translate-y-2 transition-transform duration-300">
+                <span class="text-4xl font-black text-blue-600">1</span>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 mb-4">Enter Location</h3>
+            <p class="text-gray-500 leading-relaxed text-sm">
+                Type in your 5-digit ZIP code. Our algorithm instantly matches your coordinates against our massive database of 4,544 surveyed territories.
+            </p>
+        </div>
+        
+        <!-- Krok 2 -->
+        <div class="relative z-10 text-center flex flex-col items-center group">
+            <div class="w-24 h-24 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-blue-900/5 border border-gray-100 group-hover:-translate-y-2 transition-transform duration-300">
+                <span class="text-4xl font-black text-blue-600">2</span>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 mb-4">Review Geology</h3>
+            <p class="text-gray-500 leading-relaxed text-sm">
+                Evaluate hard numbers on USDA Clay shrink-swell limits, historical housing eras, and catastrophic drought impact parameters for your street.
+            </p>
+        </div>
+        
+        <!-- Krok 3 -->
+        <div class="relative z-10 text-center flex flex-col items-center group">
+            <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-orange-900/10 group-hover:-translate-y-2 transition-transform duration-300">
+                <span class="text-4xl font-black text-white">3</span>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 mb-4">Calculate Costs</h3>
+            <p class="text-gray-500 leading-relaxed text-sm">
+                Generate highly accurate foundation repair cost estimates dynamically adjusted by the local economic labor index, and connect with vetted local engineers.
+            </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE USA RISK MAP -->
+  <section class="py-24 sm:py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPjwvc3ZnPg==')] opacity-10 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/50 text-blue-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm border border-blue-800">
+            Interactive Telemetry
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">Explore Geotechnical Risk by State</h2>
+        <p class="text-slate-400 sm:text-lg leading-relaxed max-w-2xl mx-auto">
+          Monitor live data feeds from our engineering network. Hover over active territories to view structural hazard reports, USDA indices, and algorithmic estimates.
+        </p>
+      </div>
+
+      <div class="w-full relative bg-white rounded-3xl p-2 sm:p-4 shadow-2xl shadow-blue-900/20">
+        <UsaRiskMap client:visible />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SILO SEO DIRECTORY -->
+  <section class="py-24 sm:py-32 bg-gray-50 border-t border-gray-200 text-center sm:text-left">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="mb-14 border-b border-gray-200 pb-8 sm:flex items-end justify-between">
+        <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-2">Browse Foundation Data by State</h2>
+            <p class="text-sm text-gray-500">Access the National Registry of structural reports and geotechnical metrics.</p>
+        </div>
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest hidden sm:block bg-white px-3 py-1 rounded-md shadow-sm border border-gray-100">National Directory</span>
+      </div>
+
+      {/* 5-Kolumnowa Siatka Pająka dla Bota Google */}
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-4">
+        {STATES.map((state) => (
+          <a href={`/${state.abbr.toLowerCase()}/`} class="text-gray-600 hover:text-blue-600 font-semibold transition-colors text-sm sm:text-[15px] flex items-center gap-2 group p-2 hover:bg-white rounded-lg hover:shadow-sm">
+            <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {state.name}
+          </a>
+        ))}
+      </div>
+      
+    </div>
+  </section>
+
+</Layout>

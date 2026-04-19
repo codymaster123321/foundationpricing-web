@@ -1,0 +1,52 @@
+---
+// LeadGenForm.astro (Refactored for PPC & Trust Elements)
+export interface Props {
+  city: string;
+  stateFull: string;
+  county: string;
+  zipCode: string;
+}
+
+const { city, stateFull, county, zipCode } = Astro.props;
+---
+<div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 sm:p-7 relative w-full">
+  
+  <div class="border-b border-gray-100 pb-4 mb-5">
+    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-gray-100 text-gray-600 text-[10px] font-bold tracking-widest uppercase mb-3 border border-gray-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Active Region Profile
+    </div>
+    <h3 class="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-tight">Foundation Repair Estimate</h3>
+  </div>
+  
+  <div class="space-y-3 mb-6">
+    <div class="flex items-center justify-between text-sm py-1">
+        <span class="text-gray-500 font-bold uppercase text-[11px] tracking-wider">City:</span>
+        <span class="font-semibold text-gray-900 truncate max-w-[140px]" title={city}>{city}</span>
+    </div>
+    <div class="flex items-center justify-between text-sm py-1">
+        <span class="text-gray-500 font-bold uppercase text-[11px] tracking-wider">County:</span>
+        <span class="font-semibold text-gray-900 truncate max-w-[140px]" title={county}>{county}</span>
+    </div>
+    <div class="flex items-center justify-between text-sm py-1">
+        <span class="text-gray-500 font-bold uppercase text-[11px] tracking-wider">State:</span>
+        <span class="font-semibold text-gray-900 truncate max-w-[140px]" title={stateFull}>{stateFull}</span>
+    </div>
+    <div class="flex items-center justify-between text-sm py-1 border-t border-gray-50 bg-gray-50/50 rounded -mx-2 px-2 mt-1">
+        <span class="text-gray-500 font-bold uppercase text-[11px] tracking-wider">Primary ZIP:</span>
+        <span class="font-bold text-blue-700 bg-blue-50 px-2 rounded">{zipCode}</span>
+    </div>
+  </div>
+  
+  <div class="space-y-4">
+    <div class="w-full bg-gradient-to-r from-gray-400 to-gray-500 text-white font-bold flex items-center justify-center gap-2 py-4 px-4 rounded-lg opacity-75">📞 Quote Available Soon</div>
+    <p class="text-[10px] text-gray-500 font-medium text-center">We earn a commission if you initiate a call via this routing number.</p>
+  </div>
+  
+  <p class="text-[11px] leading-relaxed text-gray-400 mt-5 pt-4 border-t border-gray-100 text-center font-medium px-1">
+    By calling this number, you will be connected to a third-party home services network that will match you with a licensed foundation repair specialist in your local area.
+  </p>
+</div>

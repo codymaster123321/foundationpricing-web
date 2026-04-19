@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ZipSearch from '../../components/ZipSearch.jsx';
+
+// Pobieranie wszystkich surowych artykułów encyklopedycznych z Bazy (Vite Native Eager Import)
+const rawArticles = import.meta.glob('../../data/knowledge-base/*.md', { eager: true });
+
+// Mapowanie obiektów the Markdown na karty wizytówkowe w the Hub
+const articles = Object.values(rawArticles).map((article: any) => {
+    // Ekstrakcja The Slug bezpośrednio z fizycznej nazwy pliku systemowego
+    const fileUrl = article.file;
+    const filename = fileUrl.split(/[/\\]/).pop();
+    const slug = filename ? filename.replace('.md', '') : 'unknown-guide';
+    
+    return {
+        title: article.frontmatter.title || 'Untitled Engineering Guide',
+        category: article.frontmatter.category || 'Geotechnical Analysis',
+        excerpt: article.frontmatter.description || 'Discover critical insights regarding soil testing, foundation repair and structural integrity.',
+        slug: slug
+    };
+});
+---
+
+<Layout 
+  title="Foundation Repair Knowledge Base & Guides | Foundation Pricing"
+  description="Explore engineering guides, soil diagnostics, and foundation repair methods to protect your home's structural integrity."
+>
+  <!-- HERO & SEARCH SECTION -->
+  <section class="bg-gray-900 border-b border-gray-800 py-16 sm:py-24 relative z-20">
+    <!-- Subtle dotted/grid overlay -->
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPjwvc3ZnPg==')] opacity-10 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+        <div class="flex-1">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/50 text-blue-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm border border-blue-800">
+                Official Blog & Guides
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
+                Foundation Repair Knowledge Base & Guides
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 leading-relaxed font-medium mb-10 max-w-2xl">
+                Master the science behind your home. Jump into our analytical articles or instantly locate your property's soil risk profile by searching your ZIP Area Code.
+            </p>
+        </div>
+        <div class="w-full md:w-auto md:min-w-[420px] bg-white p-6 sm:p-8 rounded-2xl shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Check Your Local Risk Output</h3>
+            <p class="text-sm text-gray-500 mb-6 font-medium">View your localized structural report.</p>
+            <ZipSearch client:load />
+        </div>
+    </div>
+  </section>
+
+  <!-- KNOWLEDGE BASE ARTICLE GRID -->
+  <section class="py-16 sm:py-24 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {articles.map((article) => (
+            <a href={`/knowledge-base/${article.slug}`} class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg hover:border-blue-300 transition-all duration-300 flex flex-col">
+                <div class="bg-gray-200 aspect-video w-full flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                        <svg class="w-16 h-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="p-6 sm:p-8 flex-1 flex flex-col">
+                    <span class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-3 block">{article.category}</span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-700 transition-colors leading-tight">{article.title}</h3>
+                    <p class="text-gray-600 mb-8 text-sm sm:text-base flex-1 leading-relaxed">{article.excerpt}</p>
+                    <span class="font-bold text-blue-600 group-hover:text-blue-800 transition-colors inline-flex items-center gap-1.5 text-sm uppercase tracking-wide mt-auto">
+                        Read Guide 
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
