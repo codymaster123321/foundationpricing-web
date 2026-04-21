@@ -1,8 +1,12 @@
 ---
+
 title: "Plumbing Leak or Foundation Failure? How to Read Your Home's Warning Signs"
 description: "Is it a plumbing leak or foundation settling? Learn how to read the warning signs of structural failure and protect your home from expansive clay damage."
 category: "Structural Diagnostics"
+
+image: /images/kb/plumbing_leak_or_foundation_failure_how_to_read_your_homes_warning_signs.jpg
 ---
+
 
 # Plumbing Leak or Foundation Failure? How to Read Your Home's Warning Signs
 

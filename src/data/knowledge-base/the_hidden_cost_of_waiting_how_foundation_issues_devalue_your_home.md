@@ -1,8 +1,12 @@
 ---
+
 title: "The Hidden Cost of Waiting: How Foundation Issues Devalue Your Home"
 description: "Discover the hidden cost of delaying foundation repair. Learn how structural issues devalue your home and impact equity, appraisals, and mortgage options."
 category: "Real Estate & Financials"
+
+image: /images/kb/the_hidden_cost_of_waiting_how_foundation_issues_devalue_your_home.jpg
 ---
+
 
 # The Hidden Cost of Waiting: How Foundation Issues Devalue Your Home
 

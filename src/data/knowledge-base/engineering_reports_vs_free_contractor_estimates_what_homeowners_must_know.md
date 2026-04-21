@@ -1,8 +1,12 @@
 ---
+
 title: "Engineering Reports vs. Free Contractor Estimates: What Homeowners Must Know"
 description: "Engineering reports vs. free contractor estimates: Learn why hiring an independent structural engineer is crucial for unbiased foundation repair quotes."
 category: "Industry Transparency"
+
+image: /images/kb/engineering_reports_vs_free_contractor_estimates_what_homeowners_must_know.jpg
 ---
+
 
 # Engineering Reports vs. Free Contractor Estimates: What Homeowners Must Know
 

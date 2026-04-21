@@ -1,8 +1,12 @@
 ---
+
 title: "The Legal Minefield of Selling a House with Unrepaired Foundation Cracks"
 description: "Navigate the legal risks of selling a house with foundation problems. Understand state disclosure laws to protect yourself from post-sale fraud litigation."
 category: "Legal & Compliance"
+
+image: /images/kb/the_legal_minefield_of_selling_a_house_with_unrepaired_foundation_cracks.jpg
 ---
+
 
 # The Legal Minefield of Selling a House with Unrepaired Foundation Cracks
 

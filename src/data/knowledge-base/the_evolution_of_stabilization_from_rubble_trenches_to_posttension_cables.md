@@ -1,8 +1,12 @@
 ---
+
 title: "The Evolution of Stabilization: From Rubble Trenches to Post-Tension Cables"
 description: "Explore the evolution of foundation stabilization. Learn how engineering advanced from rubble trenches to post-tension cables to combat expansive soils."
 category: "Construction & Engineering"
+
+image: /images/kb/the_evolution_of_stabilization_from_rubble_trenches_to_posttension_cables.jpg
 ---
+
 
 # The Evolution of Stabilization: From Rubble Trenches to Post-Tension Cables
 

@@ -1,8 +1,12 @@
 ---
+
 title: "Deep Driven Solutions: Steel Push Piers vs. Helical Piers in Clay Soils"
 description: "Compare steel push piers vs. helical piers for foundation repair. Learn the geotechnical physics of deep-driven stabilization solutions in expansive clay."
 category: "Repair Methodologies"
+
+image: /images/kb/deep_driven_solutions_steel_push_piers_vs_helical_piers_in_clay_soils.jpg
 ---
+
 
 # Deep Driven Solutions: Steel Push Piers vs. Helical Piers in Clay Soils
 

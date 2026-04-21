@@ -1,8 +1,12 @@
 ---
+
 title: "The Threat in Your Yard: How Tree Roots and Soil Desiccation Destroy Foundations"
 description: "Learn how mature tree roots and soil desiccation destroy foundations. Discover the hidden yard threats causing differential settlement in older neighborhoods."
 category: "Geotechnical Data"
+
+image: /images/kb/the_threat_in_yard_how_tree_roots_and_soil_desiccation_destroy_foundations.jpg
 ---
+
 
 # The Threat in Your Yard: How Tree Roots and Soil Desiccation Destroy Foundations
 

@@ -1,8 +1,12 @@
 ---
+
 title: "Foundation Challenges in Aging American Homes: 1970s vs 2000s Construction"
 description: "Explore foundation challenges across different eras. Compare structural risks in aging 1970s homes versus the fast-paced 2000s construction boom."
 category: "Construction & Engineering"
+
+image: /images/kb/foundation_challenges_in_aging_american_homes_1970s_vs_2000s_construction.jpg
 ---
+
 
 # Foundation Challenges in Aging American Homes: 1970s vs 2000s Construction
 

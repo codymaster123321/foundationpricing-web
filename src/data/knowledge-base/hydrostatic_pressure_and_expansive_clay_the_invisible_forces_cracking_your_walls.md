@@ -1,8 +1,12 @@
 ---
+
 title: "Hydrostatic Pressure and Expansive Clay: The Invisible Forces Cracking Your Walls"
 description: "Discover how hydrostatic pressure and expansive clay crack basement walls. Learn the geotechnical science behind the invisible forces destroying foundations."
 category: "Geotechnical Data"
+
+image: /images/kb/hydrostatic_pressure_and_expansive_clay_the_invisible_forces_cracking_your_walls.jpg
 ---
+
 
 # Hydrostatic Pressure and Expansive Clay: The Invisible Forces Cracking Your Walls
 

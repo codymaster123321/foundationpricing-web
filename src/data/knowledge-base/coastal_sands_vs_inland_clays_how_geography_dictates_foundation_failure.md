@@ -1,8 +1,12 @@
 ---
+
 title: "Coastal Sands vs. Inland Clays: How Geography Dictates Foundation Failure"
 description: "Coastal sands vs. inland clays: Discover how regional geography dictates foundation failure, from coastal washout to violent shrink-swell clay expansion."
 category: "Climate & Geography"
+
+image: /images/kb/coastal_sands_vs_inland_clays_how_geography_dictates_foundation_failure.jpg
 ---
+
 
 # Coastal Sands vs. Inland Clays: How Geography Dictates Foundation Failure
 

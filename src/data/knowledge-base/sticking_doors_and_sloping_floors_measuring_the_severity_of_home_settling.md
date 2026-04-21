@@ -1,8 +1,12 @@
 ---
+
 title: "Sticking Doors and Sloping Floors: Measuring the Severity of Home Settling"
 description: "Sticking doors and sloping floors are early signs of severe home settling. Learn how differential settlement warps your home's framing and what to do next."
 category: "Structural Diagnostics"
+
+image: /images/kb/sticking_doors_and_sloping_floors_measuring_the_severity_of_home_settling.jpg
 ---
+
 
 # Sticking Doors and Sloping Floors: Measuring the Severity of Home Settling
 

@@ -1,8 +1,12 @@
 ---
+
 title: "Why Your Homeowners Insurance Denied Your Foundation Claim (And What to Do)"
 description: "Find out why homeowners insurance denies foundation settling claims. Learn about earth movement exclusions and what steps to take for structural coverage."
 category: "Real Estate & Financials"
+
+image: /images/kb/why_your_homeowners_insurance_denied_your_foundation_claim_and_what_to_do.jpg
 ---
+
 
 # Why Your Homeowners Insurance Denied Your Foundation Claim (And What to Do)
 

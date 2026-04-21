@@ -1,8 +1,12 @@
 ---
+
 title: "Navigating Foundation Repair Financing: Loans and Options for Homeowners"
 description: "Explore foundation repair financing options for homeowners. Learn how to secure loans, HELOCs, and contractor financing for emergency structural repairs."
 category: "Real Estate & Financials"
+
+image: /images/kb/navigating_foundation_repair_financing_loans_and_options_for_homeowners.jpg
 ---
+
 
 # Navigating Foundation Repair Financing: Loans and Options for Homeowners
 

@@ -1,8 +1,12 @@
 ---
+
 title: "Pier and Beam vs. Concrete Slab: Identifying Your Foundation's Weaknesses"
 description: "Compare pier and beam vs. concrete slab foundations. Understand your home's structural weaknesses, from rotting wood to drought-induced center heave."
 category: "Construction & Engineering"
+
+image: /images/kb/pier_and_beam_vs_concrete_slab_identifying_your_foundations_weaknesses.jpg
 ---
+
 
 # Pier and Beam vs. Concrete Slab: Identifying Your Foundation's Weaknesses
 

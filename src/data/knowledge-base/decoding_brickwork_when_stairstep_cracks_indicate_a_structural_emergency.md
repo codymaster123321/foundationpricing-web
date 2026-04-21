@@ -1,8 +1,12 @@
 ---
+
 title: "Decoding Brickwork: When Stair-Step Cracks Indicate a Structural Emergency"
 description: "Learn to decode stair-step cracks in exterior brickwork. Discover when mortar damage signals a structural emergency caused by active foundation settlement."
 category: "Structural Diagnostics"
+
+image: /images/kb/decoding_brickwork_when_stairstep_cracks_indicate_a_structural_emergency.jpg
 ---
+
 
 # Decoding Brickwork: When Stair-Step Cracks Indicate a Structural Emergency
 

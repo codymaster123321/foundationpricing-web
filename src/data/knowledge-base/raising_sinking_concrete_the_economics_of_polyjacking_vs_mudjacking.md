@@ -1,8 +1,12 @@
 ---
+
 title: "Raising Sinking Concrete: The Economics of Polyjacking vs. Mudjacking"
 description: "Polyjacking vs. mudjacking: Compare the economics and effectiveness of raising sinking concrete slabs and stabilizing foundations with modern polyurethane."
 category: "Repair Methodologies"
+
+image: /images/kb/raising_sinking_concrete_the_economics_of_polyjacking_vs_mudjacking.jpg
 ---
+
 
 # Raising Sinking Concrete: The Economics of Polyjacking vs. Mudjacking
 

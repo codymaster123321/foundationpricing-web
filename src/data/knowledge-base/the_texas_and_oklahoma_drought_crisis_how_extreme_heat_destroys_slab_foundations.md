@@ -1,8 +1,12 @@
 ---
+
 title: "The Texas and Oklahoma Drought Crisis: How Extreme Heat Destroys Slab Foundations"
 description: "Discover how extreme heat and prolonged droughts in Texas and Oklahoma cause expansive clay soil desiccation, destroying concrete slab foundations."
 category: "Climate & Geography"
+
+image: /images/kb/the_texas_and_oklahoma_drought_crisis_how_extreme_heat_destroys_slab_foundations.jpg
 ---
+
 
 # The Texas and Oklahoma Drought Crisis: How Extreme Heat Destroys Slab Foundations
 

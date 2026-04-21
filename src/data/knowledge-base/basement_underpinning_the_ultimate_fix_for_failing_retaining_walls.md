@@ -1,8 +1,12 @@
 ---
+
 title: "Basement Underpinning: The Ultimate Fix for Failing Retaining Walls"
 description: "Learn about basement underpinning and how it fixes failing retaining walls. Understand the intensive excavation required to stabilize bowing foundation walls."
 category: "Repair Methodologies"
+
+image: /images/kb/basement_underpinning_the_ultimate_fix_for_failing_retaining_walls.jpg
 ---
+
 
 # Basement Underpinning: The Ultimate Fix for Failing Retaining Walls
 

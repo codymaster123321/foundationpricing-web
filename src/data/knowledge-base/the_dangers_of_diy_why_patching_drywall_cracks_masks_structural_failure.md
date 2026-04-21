@@ -1,8 +1,12 @@
 ---
+
 title: "The Dangers of DIY: Why Patching Drywall Cracks Masks Structural Failure"
 description: "Learn why patching drywall cracks yourself is dangerous. Discover the hidden structural failures and hydrostatic pressure destroying your home's foundation."
 category: "Structural Diagnostics"
+
+image: /images/kb/the_dangers_of_diy_why_patching_drywall_cracks_masks_structural_failure.jpg
 ---
+
 
 # The Dangers of DIY: Why Patching Drywall Cracks Masks Structural Failure
 
