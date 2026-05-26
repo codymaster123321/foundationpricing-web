@@ -161,7 +161,7 @@ const schema = {
           Home
         </a>
         <span class="text-slate-300">/</span>
-        <a href={`/${frontmatter.state_abbr.toLowerCase()}`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+        <a href={`/${frontmatter.state_abbr.toLowerCase()}/`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5 text-blue-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -311,7 +311,7 @@ const schema = {
                     <h4 class="text-sm font-extrabold text-slate-900 uppercase tracking-widest mb-1.5">Fact-Checked & Geotechnically Verified</h4>
                     <p class="text-slate-600 text-sm leading-relaxed">
                         The insights and data variables referenced in this {frontmatter.city} {frontmatter.zip_code} structural report are aggregated directly from official United States Department of Agriculture (USDA) soil surveys, US Census demographics, and prevailing structural engineering literature.
-                        <br class="hidden sm:block"/><a href="/methodology" class="text-blue-600 font-semibold hover:underline mt-2 inline-block">Review our Data Methodology &rarr;</a>
+                        <br class="hidden sm:block"/><a href="/methodology/" class="text-blue-600 font-semibold hover:underline mt-2 inline-block">Review our Data Methodology &rarr;</a>
                     </p>
                 </div>
             </div>

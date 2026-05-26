@@ -26,7 +26,7 @@ if (uniqueCities.length > 1 && currentIndex !== -1) {
       {nearbyCities.map((nearbyCity) => {
         const nearbyZip = cityZipMap[nearbyCity] || '';
         const nearbySlug = nearbyCity.toLowerCase().replace(/ /g, '-');
-        const href = nearbyZip ? `/${state.toLowerCase()}/${nearbySlug}-${nearbyZip}` : '#';
+        const href = nearbyZip ? `/${state.toLowerCase()}/${nearbySlug}-${nearbyZip}/` : '#';
         return (
         <a
           href={href}

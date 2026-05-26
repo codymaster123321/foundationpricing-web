@@ -52,7 +52,7 @@ const readNext = otherArticles.slice(0, 3).map((a: any) => {
       <div class="flex items-center gap-2">
         <a href="/" class="hover:text-blue-600 transition-colors font-medium">Home</a>
         <span class="text-gray-400">/</span>
-        <a href="/knowledge-base" class="hover:text-blue-600 transition-colors font-medium">Knowledge Base</a>
+        <a href="/knowledge-base/" class="hover:text-blue-600 transition-colors font-medium">Knowledge Base</a>
         <span class="text-gray-400">/</span>
         <span class="font-bold text-gray-800">{title}</span>
       </div>
@@ -98,7 +98,7 @@ const readNext = otherArticles.slice(0, 3).map((a: any) => {
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {readNext.map((item: any) => (
-                        <a href={`/knowledge-base/${item.slug}`} class="block group h-full">
+                        <a href={`/knowledge-base/${item.slug}/`} class="block group h-full">
                             <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col hover:border-blue-300">
                                 <span class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3 block">{item.category}</span>
                                 <h4 class="text-lg font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight mb-3 line-clamp-3">{item.title}</h4>

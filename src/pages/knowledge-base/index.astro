@@ -55,7 +55,7 @@ const articles = Object.values(rawArticles).map((article: any) => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {articles.map((article) => (
-            <a href={`/knowledge-base/${article.slug}`} class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg hover:border-blue-300 transition-all duration-300 flex flex-col">
+            <a href={`/knowledge-base/${article.slug}/`} class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg hover:border-blue-300 transition-all duration-300 flex flex-col">
                 <div class="bg-gray-200 aspect-video w-full flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow duration-300">
                     {article.image ? (
                         <img

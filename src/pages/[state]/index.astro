@@ -89,7 +89,7 @@ if (stateReports[reportPath]) {
           Home
         </a>
         <span class="text-slate-300">/</span>
-        <a href={`/${state}`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
+        <a href={`/${state}/`} class="capitalize hover:text-blue-600 transition-colors font-medium flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5 text-blue-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -203,7 +203,7 @@ if (stateReports[reportPath]) {
       <div class="relative">
         <div id="city-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3 sm:gap-y-4 overflow-hidden" style="max-height: 280px; transition: max-height 0.5s ease-in-out;">
           {cities.map((city) => (
-            <a href={`/${state}/${city.citySlug}-${city.zip}`} class="group relative bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between overflow-hidden">
+            <a href={`/${state}/${city.citySlug}-${city.zip}/`} class="group relative bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between overflow-hidden">
                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200 group-hover:bg-blue-500 transition-colors"></div>
                 <div class="flex items-center gap-3 pl-1 min-w-0">
                     <div class="w-8 h-8 rounded shrink-0 bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
